@@ -3,7 +3,7 @@ namespace ExerciseProject
 {
     public class UserDetails
     {
-        
+
 
         public Data data { get; set; }
         public Support support { get; set; }

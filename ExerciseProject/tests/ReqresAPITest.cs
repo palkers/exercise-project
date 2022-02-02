@@ -1,14 +1,18 @@
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ExerciseProject
 {
     public class BasicApiTests
     {
-        private ReqresApiClient reqresApiClient;
         private string realtivePathToProperTestData = "testdata/properUserData.json";
+        private string NON_EXISTING_USER_ID = "23";
+        private string NOT_FOUND_STATUS = "Request failed with status code NotFound";
+
+        private ReqresApiClient reqresApiClient;
         private string fullPathToProperTestData;
         private UserDetails expectedUserDetails;
 
@@ -36,12 +40,15 @@ namespace ExerciseProject
 
 
         [Test]
-        public async Task ShouldReturnNotFound()
+        public void ShouldReturnNotFound()
         {
             //Given
-            
+
             //When
-            var response = await reqresApiClient.GetSingleUserDetails
+            var exception = Assert.ThrowsAsync<HttpRequestException>(async () => await reqresApiClient.GetSingleUserDetails(NON_EXISTING_USER_ID));
+
+            //Then
+            Assert.AreEqual(NOT_FOUND_STATUS, exception.Message);
         }
 
     }
